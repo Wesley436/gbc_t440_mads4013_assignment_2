@@ -8,6 +8,10 @@ class AssignmentOperationsMenu(val shipService: ShipService, val personnelServic
         )
     }
 
+    /**
+     *  Processes user's input and starts flows for assigning / unassigning personnel to ships
+     *  @param {String} userInput - The user's input, expects a number between 0 and 1
+     */
     override fun processUserInput(userInput: String) {
         val number = userInput.toIntOrNull()
         if (number == null) {
@@ -27,6 +31,14 @@ class AssignmentOperationsMenu(val shipService: ShipService, val personnelServic
         }
     }
 
+    /**
+     *  Flow for assigning / unassigning personnel to ships
+     *  Ends early if there are no personnel or no ships
+     *  Selects a personnel by inputting their Id
+     *  Unassigns personnel from ships if nothing is inputted
+     *  Selects a ship by inputting its Id
+     *  Checks if ship's maxCrew amount has been reached, if not, assigns personnel to the ship
+     */
     fun assignPersonnel() {
         if (personnelService.itemList.isEmpty()) {
             println("Empty Personnel list")

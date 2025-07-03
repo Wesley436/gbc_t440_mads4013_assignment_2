@@ -4,6 +4,14 @@ class PersonnelService: ItemManagement<Personnel> {
     override var itemList = mutableListOf<Personnel>()
     override var itemName = "Personnel"
 
+    /**
+     *  Creates a personnel object via user inputs
+     *  Inputs an unique Id
+     *  Inputs a personnel name
+     *  Inputs a personnel rank
+     *  Inputs a list of personnel skills, ends when user types an empty input
+     *  @return {Personnel} - The personnel object created
+     */
     override fun inputItemInfo(): Personnel {
         var id = ""
         var inputValid = false
@@ -49,6 +57,11 @@ class PersonnelService: ItemManagement<Personnel> {
         return Personnel(id, name, rank, skillSets, null)
     }
 
+    /**
+     *  Assigns a personnel to a ship by setting its assignedShipId value
+     *  @param {Personnel} personnel - The personnel to be assigned
+     *  @param {Ship} ship - The ship to be assigned to
+     */
     fun assignToShip(personnel: Personnel, ship: Ship) {
         personnel.assignedShipId = ship.id
         println("${personnel.name} assigned to ${ship.name}")

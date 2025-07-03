@@ -11,6 +11,10 @@ class PersonnelMenu(val personnelService: PersonnelService): Menu() {
         )
     }
 
+    /**
+     *  Processes user's input and starts flows for managing personnel items
+     *  @param {String} userInput - The user's input, expects a number between 0 and 4
+     */
     override fun processUserInput(userInput: String) {
         val number = userInput.toIntOrNull()
         if (number == null) {

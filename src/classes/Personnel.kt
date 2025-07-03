@@ -1,6 +1,9 @@
 package classes
 
 data class Personnel(override var id: String, override var name: String, var rank: String, var skillSets: MutableList<String>, var assignedShipId: String?): HasIdAndName {
+    /**
+     *  Formats the Ship object's data to be printed out
+     */
     override fun toString(): String {
         var skillSetsString = "None"
         if (skillSets.isNotEmpty()) {

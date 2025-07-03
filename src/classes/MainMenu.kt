@@ -12,6 +12,10 @@ class MainMenu(val shipMenu: ShipMenu, val personnelMainMenu: PersonnelMenu, val
         )
     }
 
+    /**
+     *  Processes user's input and opens another menu / run functions
+     *  @param {String} userInput - The user's input, expects a number between 0 and 5
+     */
     override fun processUserInput(userInput: String) {
         val number = userInput.toIntOrNull()
         if (number == null) {
@@ -35,6 +39,10 @@ class MainMenu(val shipMenu: ShipMenu, val personnelMainMenu: PersonnelMenu, val
         }
     }
 
+    /**
+     *  Prints a report by grouping personnel by their skills and then printing out their info (including which ships they are assigned to)
+     *  The same personnel can appear multiple times across different skill categories
+     */
     fun generateReports() {
         val skillPersonnelMap = HashMap<String, MutableList<Personnel>>()
         for (personnel in personnelService.itemList.filter { it -> it.assignedShipId != null }) {
@@ -58,6 +66,9 @@ class MainMenu(val shipMenu: ShipMenu, val personnelMainMenu: PersonnelMenu, val
         }
     }
 
+    /**
+     *  Prints all ships and personnel info by calling their service's list function
+     */
     fun displayAllData() {
         shipService.listItems()
         personnelService.listItems()

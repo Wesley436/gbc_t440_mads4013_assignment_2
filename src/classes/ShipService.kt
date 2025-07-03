@@ -4,6 +4,11 @@ class ShipService(val personnelService: PersonnelService): ItemManagement<Ship> 
     override var itemList = mutableListOf<Ship>()
     override var itemName = "Ship"
 
+    /**
+     *  Get the number of personnel assigned to a ship
+     *  @param {String} shipId - Id of the ship
+     *  @return {Int} crewCount - Number of personnel assigned to the ship
+     */
     fun findNumberOfCrewAssignedToShip(shipId: String): Int {
         var crewCount = 0
         for (personnel in personnelService.itemList) {
@@ -15,6 +20,14 @@ class ShipService(val personnelService: PersonnelService): ItemManagement<Ship> 
         return crewCount
     }
 
+    /**
+     *  Creates a ship object via user inputs
+     *  Inputs an unique Id
+     *  Inputs a ship name
+     *  Inputs a ship class
+     *  Inputs a max crew size
+     *  @return {Ship} - The ship object created
+     */
     override fun inputItemInfo(): Ship {
         var id = ""
         var inputValid = false
@@ -59,6 +72,12 @@ class ShipService(val personnelService: PersonnelService): ItemManagement<Ship> 
         return Ship(id, name, shipClass, maxCrew!!)
     }
 
+    /**
+     *  Validates if the updated ship's maxCrew is larger than the current number of personnel assigned to the ship
+     *  @param {Ship} targetItem - The original ship before updating
+     *  @param {Ship} updatedItem - The updated ship
+     *  @return {Pair<Boolean, String>} - A pair of values for the validation result, first is a Boolean indicating whether the update is valid, second is reason if it's not valid
+     */
     override fun validateUpdate(targetItem: Ship, updatedItem: Ship): Pair<Boolean, String> {
         val crewCount = findNumberOfCrewAssignedToShip(targetItem.id)
 
@@ -69,6 +88,13 @@ class ShipService(val personnelService: PersonnelService): ItemManagement<Ship> 
         return Pair(true, "")
     }
 
+    /**
+     *  Updates a ship
+     *  Goes through the ItemManagement's updateItem() flow
+     *  If the update's result is valid (via checking whether the returned pair values are null or not)
+     *  If the Id of the ship is updated, updates the assignedShipId of all the personnel currently assigned to the ship to the updated Id
+     *  @return {Pair<T?, T?>} - Returns the same values from ItemManagement's updateItem()
+     */
     override fun updateItem(): Pair<Ship?, Ship?> {
         val pair = super.updateItem()
         val originalShip = pair.first
@@ -83,6 +109,11 @@ class ShipService(val personnelService: PersonnelService): ItemManagement<Ship> 
         return pair
     }
 
+    /**
+     *  Disallow deleting the ship if there are still personnel assigned to the ship
+     *  @param {String} itemId - Id of the ship selected to be deleted
+     *  @return {Pair<Boolean, String>} - A pair of values for the validation result, first is a Boolean indicating whether the deletion is valid, second is reason if it's not valid
+     */
     override fun validateDelete(itemId: String): Pair<Boolean, String> {
         for (personnel in personnelService.itemList) {
             if (personnel.assignedShipId == itemId) {
